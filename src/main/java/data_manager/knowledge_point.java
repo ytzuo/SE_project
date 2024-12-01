@@ -18,6 +18,7 @@ public class knowledge_point {
         Label label = Label.label("chapter");
         List<String> knowledge_list = new ArrayList<>();
         //TODO 获取并返回指定章节的知识点
+
         return knowledge_list;
     }
 
