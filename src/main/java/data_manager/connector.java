@@ -32,7 +32,7 @@ public class connector {
     public static GraphDatabaseService connect(){
         //连接并返回graphDb对象, 用于操作数据库
         Path databaseDirectory = FileSystems.getDefault()
-                .getPath("D:\\neo4j\\neo4j-community-5.25.1");
+                .getPath("C:\\neo4j\\neo4j-community-5.25.1");
         DatabaseManagementService managementService =
                 new DatabaseManagementServiceBuilder( databaseDirectory ).build();
         GraphDatabaseService graphDb = managementService.database( DEFAULT_DATABASE_NAME );
