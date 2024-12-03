@@ -31,9 +31,9 @@ public class question {
         int blank_num = 0;
         int summary_num = 0;
         if(parentNode != null){ //计算各个类型题目的数量
-            for(Relationship r : parentNode.getRelationships(rel.select)) select_num++;
-            for(Relationship r : parentNode.getRelationships(rel.blank)) blank_num++;
-            for(Relationship r : parentNode.getRelationships(rel.summary)) summary_num++;
+            for(Relationship r : parentNode.getRelationships(Direction.OUTGOING,rel.select)) select_num++;
+            for(Relationship r : parentNode.getRelationships(Direction.OUTGOING,rel.blank)) blank_num++;
+            for(Relationship r : parentNode.getRelationships(Direction.OUTGOING,rel.summary)) summary_num++;
         }
         question_num_list.add(select_num);
         question_num_list.add(blank_num);
@@ -47,7 +47,7 @@ public class question {
         Node parentNode = tx.findNode(label, "chapter_name", chapter); //参数含义同上
         List<String> select_list = new ArrayList<>();
         if(parentNode != null){
-            for(Relationship r : parentNode.getRelationships(rel.select)) {
+            for(Relationship r : parentNode.getRelationships(Direction.OUTGOING,rel.select)) {
                 Node childNode = r.getOtherNode(parentNode);
                 String question = childNode.getProperty("question").toString();
                 String answer = childNode.getProperty("answer").toString();
@@ -64,7 +64,7 @@ public class question {
         Node parentNode = tx.findNode(label, "chapter_name", chapter); //参数含义同上
         List<String> blank_list = new ArrayList<>();
         if(parentNode != null){
-            for(Relationship r : parentNode.getRelationships(rel.blank)) {
+            for(Relationship r : parentNode.getRelationships(Direction.OUTGOING,rel.blank)) {
                 Node childNode = r.getOtherNode(parentNode);
                 String question = childNode.getProperty("question").toString();
                 String answer = childNode.getProperty("answer").toString();
@@ -81,7 +81,7 @@ public class question {
         Node parentNode = tx.findNode(label, "chapter_name", chapter); //参数含义同上
         List<String> summary_list = new ArrayList<>();
         if(parentNode != null){
-            for(Relationship r : parentNode.getRelationships(rel.blank)) {
+            for(Relationship r : parentNode.getRelationships(Direction.OUTGOING,rel.blank)) {
                 Node childNode = r.getOtherNode(parentNode);
                 String question = childNode.getProperty("question").toString();
                 String answer = childNode.getProperty("answer").toString();
