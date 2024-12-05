@@ -56,14 +56,13 @@ public class GraphDatabaseHelper {
     }
 
     // 示例：创建一个节点并添加多个属性
-    public static Node insertNodeWithMultipleProperties(GraphDatabaseService graphDb, String label, String[] propertyKeys, String[] propertyValues) {
-        try (Transaction tx = graphDb.beginTx()) {
+    public static Node insertNodeWithMultipleProperties(Transaction tx, String label, String[] propertyKeys, String[] propertyValues) {
+        try{
             Node node = tx.createNode(Label.label(label));
             for (int i = 0; i < propertyKeys.length; i++) {
                 node.setProperty(propertyKeys[i], propertyValues[i]);
             }
-            // 提交事务
-            tx.commit();
+
             return node;
         } catch (Exception e) {
             e.printStackTrace();  // 捕获并打印异常
@@ -75,8 +74,8 @@ public class GraphDatabaseHelper {
 //String label: 节点的标签（Label）
 //String propertyKey: 节点的属性键
 //Object propertyValue: 节点的属性值
-    public static Node findNodeByProperty(GraphDatabaseService graphDb, String label, String propertyKey, Object propertyValue) {
-        try (Transaction tx = graphDb.beginTx()) {
+    public static Node findNodeByProperty(Transaction tx, String label, String propertyKey, Object propertyValue) {
+        try{
             // 使用资源获取节点
             ResourceIterator<Node> nodes = tx.findNodes(Label.label(label), propertyKey, propertyValue);
             if (nodes.hasNext()) {
