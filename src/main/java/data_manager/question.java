@@ -22,10 +22,10 @@ public class question {
         select, blank, summary
     }
 
-    public static List<Integer> get_question_num(String chapter, Transaction tx){
+    public static List<Integer> get_question_num(String knowledge, Transaction tx){
         //可以用来支持随机选题, 由于数据库中存储的题目数可能超过一章后习题的数量
-        Label label = Label.label("chapter");
-        Node parentNode = tx.findNode(label, "chapter_name", chapter); //三个参数为: 节点的标签, 节点的属性名, 节点的属性值
+        Label label = Label.label("knowledge");
+        Node parentNode = tx.findNode(label, "knowledge_name", knowledge); //三个参数为: 节点的标签, 节点的属性名, 节点的属性值
         List<Integer> question_num_list = new ArrayList<>();
         int select_num = 0;
         int blank_num = 0;
@@ -42,9 +42,9 @@ public class question {
         return question_num_list;
     }
 
-    public static List<String> get_select(String chapter, Transaction tx){
-        Label label = Label.label("chapter");
-        Node parentNode = tx.findNode(label, "chapter_name", chapter); //参数含义同上
+    public static List<String> get_select(String knowledge, Transaction tx){
+        Label label = Label.label("knowledge");
+        Node parentNode = tx.findNode(label, "knowledge_name", knowledge); //参数含义同上
         List<String> select_list = new ArrayList<>();
         if(parentNode != null){
             for(Relationship r : parentNode.getRelationships(Direction.OUTGOING,rel.select)) {
@@ -59,9 +59,9 @@ public class question {
         return select_list;
     }
 
-    public static List<String> get_blank(String chapter, Transaction tx){
+    public static List<String> get_blank(String knowledge, Transaction tx){
         Label label = Label.label("chapter");
-        Node parentNode = tx.findNode(label, "chapter_name", chapter); //参数含义同上
+        Node parentNode = tx.findNode(label, "knowledge_name", knowledge); //参数含义同上
         List<String> blank_list = new ArrayList<>();
         if(parentNode != null){
             for(Relationship r : parentNode.getRelationships(Direction.OUTGOING,rel.blank)) {
@@ -76,9 +76,9 @@ public class question {
         return blank_list;
     }
 
-    public static List<String> get_summary(String chapter, Transaction tx){
-        Label label = Label.label("chapter");
-        Node parentNode = tx.findNode(label, "chapter_name", chapter); //参数含义同上
+    public static List<String> get_summary(String knowledge, Transaction tx){
+        Label label = Label.label("knowledge");
+        Node parentNode = tx.findNode(label, "knowledge_name", knowledge); //参数含义同上
         List<String> summary_list = new ArrayList<>();
         if(parentNode != null){
             for(Relationship r : parentNode.getRelationships(Direction.OUTGOING,rel.blank)) {
