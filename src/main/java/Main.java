@@ -6,9 +6,10 @@ public class Main {
 
     public Main(){
         kc = new KnowledgeCL();
-
+        aw = new AnsweringWindow();
     }
 
     public static void main(String[] args) {
+        Main m = new Main();
     }
 }

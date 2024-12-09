@@ -91,6 +91,7 @@ public class KnowledgeCL extends JFrame{
         jb.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                AnsweringWindow aw = new AnsweringWindow();
                 KnowledgeCL.this.dispose();
 
             }
