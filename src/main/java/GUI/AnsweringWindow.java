@@ -45,6 +45,13 @@ public class AnsweringWindow {
         selectionPanel = new SelectionPanel();
         shortAnswerPanel = new ShortAnswerPanel();
         JFrame frame = new JFrame("AnsweringWindow");
+
+        // 设置字体放大一倍
+        Font font = new Font("微软雅黑", Font.PLAIN, 16); // 例如，将字体大小设置为16
+        UIManager.put("Label.font", font);
+        UIManager.put("TextArea.font", font);
+        UIManager.put("Button.font", font);
+
         frame.setContentPane(Aw);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
@@ -161,6 +168,9 @@ public class AnsweringWindow {
 
             // 问题 label
             questionLabel = new JLabel("问题");
+            questionLabel = new JLabel("问题");
+            //设置字体
+            questionLabel.setFont(new Font("微软雅黑", Font.PLAIN, 16));
             add(questionLabel, BorderLayout.NORTH);
 
             // 创建选项
@@ -209,6 +219,15 @@ public class AnsweringWindow {
                     currentSelectQuestionIndex++;
                     QuestionList.setSelectedIndex(currentSelectQuestionIndex);
                     loadQuestion(currentSelectQuestionIndex, true); // 加载下一题
+                } else {
+                    // 如果已经是最后一题，跳转至简答题第一题
+                    if (currentSelectQuestionIndex == SelectQuestions.size() - 1) {
+                        currentSummaryQuestionIndex = 0; // 跳转到简答题第一题
+                        QuestionList.setSelectedIndex(currentSummaryQuestionIndex + SelectQuestions.size()); // 确保切换到简答列表的对应索引
+                        loadQuestion(currentSummaryQuestionIndex, false); // 加载简答题
+                    }
+                    // 提示用户已经是最后一题
+                    //JOptionPane.showMessageDialog(this, "已经是最后一题!");
                 }
             });
 
@@ -257,19 +276,21 @@ public class AnsweringWindow {
     }
 
     private void submitAnswers() {
-        // 计算得分
+        // 计算选择题得分
         int score = 0;
         StringBuilder incorrectAnswers = new StringBuilder();
+        // 保存用户输入的错误答案
+        StringBuilder userMistakes = new StringBuilder();
 
         for (int i = 0; i < SelectQuestions.size(); i++) {
             if (UserSelectAnswers.size() > i && UserSelectAnswers.get(i).equals(SelectAnswers.get(i))) {
                 score++;
             } else {
                 incorrectAnswers.append("题目: ").append(SelectQuestions.get(i))
-                        .append(" 正确答案: ").append(SelectAnswers.get(i)).append("\n");
+                        .append(" 正确答案: ").append(SelectAnswers.get(i)).append(" 你的答案: ")
+                        .append(UserSelectAnswers.get(i)).append("\n");
             }
         }
-
         // 弹出得分窗口
         showScoreWindow(score, incorrectAnswers.toString());
     }
@@ -283,11 +304,22 @@ public class AnsweringWindow {
         JLabel scoreLabel = new JLabel("你的得分: " + score + "/" + SelectQuestions.size());
         scoreFrame.add(scoreLabel, BorderLayout.NORTH);
 
-        // 显示错误的题目和答案
+        // 显示错误的选择题及答案
         JTextArea incorrectAnswersArea = new JTextArea(10, 30);
         incorrectAnswersArea.setText(incorrectAnswers);
         incorrectAnswersArea.setEditable(false);
         scoreFrame.add(new JScrollPane(incorrectAnswersArea), BorderLayout.CENTER);
+
+        // 显示简答题的题目和答案
+        StringBuilder summaryAnswersBuilder = new StringBuilder();
+        for (int i = 0; i < SummaryQuestions.size(); i++) {
+            summaryAnswersBuilder.append("简答题: ").append(SummaryQuestions.get(i))
+                    .append(" 正确答案: ").append(SummaryAnswers.get(i)).append("\n");
+        }
+        JTextArea summaryArea = new JTextArea(10, 30);
+        summaryArea.setText(summaryAnswersBuilder.toString());
+        summaryArea.setEditable(false);
+        scoreFrame.add(new JScrollPane(summaryArea), BorderLayout.SOUTH); // 在下方添加简答题的内容
 
         scoreFrame.setVisible(true);
         scoreFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -308,10 +340,12 @@ public class AnsweringWindow {
 
             // 问题 label
             questionLabel = new JLabel("问题");
+            questionLabel.setFont(new Font("微软雅黑", Font.PLAIN, 16)); // 设置字体
             add(questionLabel, BorderLayout.NORTH);
 
             // 答案区域
             answerArea = new JTextArea(10, 30);
+            answerArea.setFont(new Font("微软雅黑", Font.PLAIN, 16)); // 设置字体
             add(new JScrollPane(answerArea), BorderLayout.CENTER);
 
             // 按钮Panel
@@ -336,6 +370,9 @@ public class AnsweringWindow {
                     currentSummaryQuestionIndex++;
                     QuestionList.setSelectedIndex(currentSummaryQuestionIndex + SelectQuestions.size());
                     loadQuestion(currentSummaryQuestionIndex, false); // 加载下一题
+                }
+                if (currentSummaryQuestionIndex == SummaryQuestions.size() - 1) {
+                    JOptionPane.showMessageDialog(this, "已经是最后一题!");
                 }
             });
 

@@ -5,7 +5,7 @@ public class Main {
 
     public Main(){
         kc = new KnowledgeCL();
-        aw = new AnsweringWindow();
+        //aw = new AnsweringWindow();
     }
 
     public static void main(String[] args) {
