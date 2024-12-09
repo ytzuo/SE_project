@@ -45,7 +45,7 @@ public class AnsweringWindow extends JFrame {
         shortAnswerPanel = new ShortAnswerPanel();
         JFrame frame = new JFrame("AnsweringWindow");
         frame.setContentPane(Aw);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setBounds(100,100,900, 600);
 
         //连接数据库并初始化题目

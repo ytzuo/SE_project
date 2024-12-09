@@ -81,7 +81,7 @@ public class KnowledgeCL extends JFrame{
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 AnsweringWindow aw = new AnsweringWindow(itemName, tx);
-                KnowledgeCL.this.dispose();
+                //KnowledgeCL.this.dispose();
 
             }
         });
