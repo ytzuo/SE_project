@@ -1,4 +1,3 @@
-import org.neo4j.*;
 import GUI.*;
 public class Main {
     AnsweringWindow aw;
