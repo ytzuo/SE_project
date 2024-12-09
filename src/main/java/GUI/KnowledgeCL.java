@@ -17,7 +17,6 @@ import static java.util.Collections.sort;
 
 public class KnowledgeCL extends JFrame{
     public static void main(String[] args) {
-        // TODO Auto-generated method stub
         new KnowledgeCL();
     }
     public KnowledgeCL() {
