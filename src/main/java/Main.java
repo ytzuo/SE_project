@@ -1,6 +1,14 @@
 import org.neo4j.*;
+import GUI.*;
 public class Main {
-    public static void main(String[] args) {
+    AnsweringWindow aw;
+    KnowledgeCL kc;
 
+    public Main(){
+        kc = new KnowledgeCL();
+
+    }
+
+    public static void main(String[] args) {
     }
 }
