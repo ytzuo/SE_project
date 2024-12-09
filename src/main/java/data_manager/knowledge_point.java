@@ -32,7 +32,7 @@ public class knowledge_point {
         if(parentNode != null){
             for(Relationship r : parentNode.getRelationships(Direction.OUTGOING, rel)){
                 Node childNode = r.getOtherNode(parentNode);
-                knowledge_list.add(childNode.getProperty("knowledge").toString()); //将二级知识点加入List中
+                knowledge_list.add(childNode.getProperty("knowledge_name").toString()); //将二级知识点加入List中
             }
         }
 
