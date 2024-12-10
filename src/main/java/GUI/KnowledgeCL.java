@@ -17,18 +17,21 @@ import static java.util.Collections.sort;
 
 public class KnowledgeCL extends JFrame{
     public static void main(String[] args) {
+        System.out.println("begin");
         new KnowledgeCL();
+        System.out.println("end");
+        //System.exit(0);
     }
     public KnowledgeCL() {
         super("Welcome");//标题
         this.tx = connector.connect().beginTx();
+
         this.setBounds(100, 100, 1250, 550);//设置页面
         this.setLayout(new BorderLayout()); // 使用 BorderLayout 布局管理器
 
 
-        //List<String> list = new ArrayList<>();
-        //list.add("beijing");
-        //list.add("shanghai");
+        //addWindowListener(new MyWindowListener());
+
         String beginning = "软件过程模型";
         List<String> list = knowledge_point.get_knowledge(beginning, tx);
         sort(list);
@@ -68,8 +71,6 @@ public class KnowledgeCL extends JFrame{
         ta.setDisabledTextColor(Color.black);
         this.add(ta,BorderLayout.CENTER);
 
-
-
         JPanel jp = new JPanel();
         jb = new JButton("自测");
         jb.setSize(100, 50);
@@ -80,9 +81,8 @@ public class KnowledgeCL extends JFrame{
         jb.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                AnsweringWindow aw = new AnsweringWindow(itemName, tx);
-                KnowledgeCL.this.dispose();
-
+                KnowledgeCL.this.setVisible(false);
+                AnsweringWindow aw = new AnsweringWindow(itemName, tx, KnowledgeCL.this);
             }
         });
         //选中的二级知识点String itemName
@@ -90,7 +90,10 @@ public class KnowledgeCL extends JFrame{
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
+        //AnsweringWindow aw = new AnsweringWindow("2.4 原型模型", tx, KnowledgeCL.this);
+
     }
+
 
     private JList list1;
     private JButton jb;
