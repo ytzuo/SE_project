@@ -4,6 +4,8 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.*;
 import java.util.List;
 
@@ -12,6 +14,7 @@ import org.neo4j.graphdb.Transaction;
 import data_manager.*;
 
 public class AnsweringWindow extends JFrame {
+    KnowledgeCL parent;
     private JPanel Aw;
     private JList QuestionList;
     private JPanel Inter;
@@ -34,7 +37,9 @@ public class AnsweringWindow extends JFrame {
 
     //默认构造函数为展示2.4的内容
 
-    public AnsweringWindow(String _knowledgeTitle, Transaction tx){
+    public AnsweringWindow(String _knowledgeTitle, Transaction tx, KnowledgeCL parent){
+        super("AnsweringWindow");
+        this.parent = parent;
         this.tx = tx;
         knowledgeTitle = _knowledgeTitle;
         // 初始化组件
@@ -43,18 +48,23 @@ public class AnsweringWindow extends JFrame {
         Inter = new JPanel(new CardLayout());
         selectionPanel = new SelectionPanel();
         shortAnswerPanel = new ShortAnswerPanel();
-        JFrame frame = new JFrame("AnsweringWindow");
-        frame.setContentPane(Aw);
-        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setBounds(100,100,900, 600);
-
+        this.setContentPane(Aw);
+        this.setBounds(100,100,900, 600);
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                AnsweringWindow.this.parent.setVisible(true);
+                AnsweringWindow.this.dispose();
+            }
+        });
         //连接数据库并初始化题目
         dataPrepare();
 
         //决定用户答案大小
         for(int i = 0;i < SelectAnswers.size();i++){
             UserSelectAnswers.add(" ");
-        };
+        }
 
         // 创建选择题和简答题面板
         selectionPanel = new SelectionPanel();
@@ -97,7 +107,7 @@ public class AnsweringWindow extends JFrame {
         Aw.add(Inter, BorderLayout.CENTER);
         QuestionList.setSelectedIndex(0);
 
-        frame.setVisible(true);
+        this.setVisible(true);
     }
 
     private void dataPrepare(){
