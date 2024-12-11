@@ -9,24 +9,25 @@ import java.awt.event.WindowEvent;
 import java.util.*;
 import java.util.List;
 
-import org.neo4j.graphdb.GraphDatabaseService;
+//import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
 import data_manager.*;
 
 public class AnsweringWindow extends JFrame {
     KnowledgeCL parent;
+    private boolean hasSubmitted = false;
     private JPanel Aw;
     private JList QuestionList;
     private JPanel Inter;
     private SelectionPanel selectionPanel;
     private ShortAnswerPanel shortAnswerPanel;
     private JButton submitButton;
-    private List<String> SelectQuestions = new ArrayList<String>();
-    private List<String> SummaryQuestions = new ArrayList<String>();
-    private List<String> SelectAnswers = new ArrayList<String>();
-    private List<String> UserSelectAnswers = new ArrayList<String>();
-    private List<String> SummaryAnswers = new ArrayList<String>();
-    private List<String> UserSummaryAnswers = new ArrayList<String>();
+    private List<String> SelectQuestions = new ArrayList<>();
+    private List<String> SummaryQuestions = new ArrayList<>();
+    private List<String> SelectAnswers = new ArrayList<>();
+    private List<String> UserSelectAnswers = new ArrayList<>();
+    private List<String> SummaryAnswers = new ArrayList<>();
+    private List<String> UserSummaryAnswers = new ArrayList<>();
     private Transaction tx;
     static String knowledgeTitle = "2.4 原型模型";
     //这里需要从上级窗口获得知识点的标题
@@ -113,7 +114,7 @@ public class AnsweringWindow extends JFrame {
     private void dataPrepare(){
         //GraphDatabaseService db = connector.connect();
         //Transaction tx = db.beginTx();
-        Vector<String> QusIndex = new Vector<String>();
+        Vector<String> QusIndex = new Vector<>();
         List<Integer> question_nums = question.get_question_num(knowledgeTitle, tx);
         for (int i = 0; i < question_nums.get(0); i++) {
             QusIndex.add("选择" + (i + 1));
@@ -217,15 +218,31 @@ public class AnsweringWindow extends JFrame {
                 }
             });
 
-            // 下一题按钮事件
+            /*// 下一题按钮事件
             nextButton.addActionListener(e -> {
                 if (currentSelectQuestionIndex < SelectQuestions.size() - 1) {
                     currentSelectQuestionIndex++;
                     QuestionList.setSelectedIndex(currentSelectQuestionIndex);
                     loadQuestion(currentSelectQuestionIndex, true); // 加载下一题
                 }
-            });
+            });*/
 
+            // 下一题按钮事件
+            nextButton.addActionListener(e -> {
+                if (currentSelectQuestionIndex < SelectQuestions.size() - 1) {
+                    currentSelectQuestionIndex++;
+                    QuestionList.setSelectedIndex(currentSelectQuestionIndex);
+                    loadQuestion(currentSelectQuestionIndex, true); // 加载下一题
+                } else {
+                    // 如果已经是最后一题，跳转至简答题第一题
+                    if (currentSelectQuestionIndex == SelectQuestions.size() - 1) {
+                        currentSummaryQuestionIndex = 0; // 跳转到简答题第一题
+                        QuestionList.setSelectedIndex(currentSummaryQuestionIndex + SelectQuestions.size()); // 确保切换到简答列表的对应索引
+                        loadQuestion(currentSummaryQuestionIndex, false); // 加载简答题
+                    }
+
+                }
+            });
             buttonPanel.add(previousButton);
             buttonPanel.add(nextButton);
             add(buttonPanel, BorderLayout.SOUTH);
@@ -271,6 +288,11 @@ public class AnsweringWindow extends JFrame {
     }
 
     private void submitAnswers() {
+        if(this.hasSubmitted){
+            // 提示用户已经交卷
+            JOptionPane.showMessageDialog(this, "您已交卷, 无法再次提交!");
+            return ;
+        }
         // 计算得分
         int score = 0;
         StringBuilder incorrectAnswers = new StringBuilder();
@@ -289,6 +311,7 @@ public class AnsweringWindow extends JFrame {
     }
 
     private void showScoreWindow(int score, String incorrectAnswers) {
+        this.hasSubmitted = true;
         JFrame scoreFrame = new JFrame("交卷结果");
         scoreFrame.setBounds(100,100,800, 600);
         scoreFrame.setLayout(new BorderLayout());
@@ -355,6 +378,10 @@ public class AnsweringWindow extends JFrame {
                     currentSummaryQuestionIndex--;
                     QuestionList.setSelectedIndex(currentSummaryQuestionIndex + SelectQuestions.size());
                     loadQuestion(currentSummaryQuestionIndex, false); // 加载上一题
+                }
+                else if(currentSelectQuestionIndex == SelectQuestions.size()-1){
+                    QuestionList.setSelectedIndex(SelectQuestions.size() -1 );
+                    loadQuestion(currentSelectQuestionIndex, false); // 加载上一题
                 }
             });
 
