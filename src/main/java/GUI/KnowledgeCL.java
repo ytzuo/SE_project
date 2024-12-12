@@ -11,22 +11,23 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.Collections.sort;
 
 public class KnowledgeCL extends JFrame{
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         System.out.println("begin");
         new KnowledgeCL();
         System.out.println("end");
         //System.exit(0);
-    }
+    }*/
     public KnowledgeCL() {
         super("Welcome");//标题
         this.tx = connector.connect().beginTx();
 
-        this.setBounds(100, 100, 1250, 550);//设置页面
+        this.setBounds(100, 100, 1400, 700);//设置页面
         this.setLayout(new BorderLayout()); // 使用 BorderLayout 布局管理器
 
 
@@ -56,7 +57,9 @@ public class KnowledgeCL extends JFrame{
                 ta.setText("");
                 //
                 //?
-                ta.setText(String.join("\n", knowledge_point.get_knowledge_content(itemName, tx)));
+                List<String> text = knowledge_point.get_knowledge_content(itemName, tx);
+                Collections.sort(text);
+                ta.setText(String.join("\n\n\n", text));
                 //
 
             }
