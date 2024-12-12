@@ -79,17 +79,29 @@ public class KnowledgeCL extends JFrame{
         jb.setSize(100, 50);
         jp.add(jb);
         this.add(jp,BorderLayout.SOUTH);
-
-
+        help = new JButton("帮助");
+        help.setSize(100, 50);
+        jp.add(help);
         jb.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                KnowledgeCL.this.setVisible(false);
-                AnsweringWindow aw = new AnsweringWindow(itemName, tx, KnowledgeCL.this);
+                if(itemName != null)
+                {
+                    KnowledgeCL.this.setVisible(false);
+                    AnsweringWindow aw = new AnsweringWindow(itemName, tx, KnowledgeCL.this);
+                }
             }
         });
         //选中的二级知识点String itemName
         //在jbutton的事件类內开始自测
+        help.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                aw = new AIHelpWindow();
+                aw.setVisible(true);
+            }
+        });
+
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
@@ -100,7 +112,9 @@ public class KnowledgeCL extends JFrame{
 
     private JList list1;
     private JButton jb;
+    private JButton help;
     JTextArea ta;
     String itemName;
     private Transaction tx;
+    private AIHelpWindow aw;
 }
