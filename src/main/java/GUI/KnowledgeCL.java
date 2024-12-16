@@ -79,7 +79,7 @@ public class KnowledgeCL extends JFrame{
         jb.setSize(100, 50);
         jp.add(jb);
         this.add(jp,BorderLayout.SOUTH);
-        help = new JButton("帮助");
+        help = new JButton("问AI");
         help.setSize(100, 50);
         jp.add(help);
         jb.addActionListener(new ActionListener() {
