@@ -24,7 +24,7 @@ public class KnowledgeCL extends JFrame{
         //System.exit(0);
     }*/
     public KnowledgeCL() {
-        super("Welcome");//标题
+        super("软件工程知识学习");//标题
         this.tx = connector.connect().beginTx();
 
         this.setBounds(100, 100, 1400, 700);//设置页面
@@ -42,7 +42,7 @@ public class KnowledgeCL extends JFrame{
         this.list1 = new JList(jg);
         list1.setBorder(BorderFactory.createTitledBorder("请选择需要学习的二级知识点"));
         this.add(list1,BorderLayout.WEST);
-        list1.setFont(new Font("宋体",Font.BOLD, 20));
+        list1.setFont(new Font("微软雅黑",Font.BOLD, 20));
         //二级知识点展示栏
 
         class myListener implements ListSelectionListener  //创建监听器，实现列表项选择监听接口
@@ -67,7 +67,7 @@ public class KnowledgeCL extends JFrame{
         list1.addListSelectionListener(new myListener()); //添加监听器
 
         ta = new JTextArea();
-        ta.setFont(new Font("宋体", Font.BOLD, 15));
+        ta.setFont(new Font("微软雅黑", Font.BOLD, 15));
         ta.append(String.join("\n", list));
         //ta.setEditable(false);
         ta.disable();
